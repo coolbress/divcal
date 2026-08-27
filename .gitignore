@@ -15,5 +15,10 @@ dist/
 .env.*
 !.env.example
 
+# 🔴 실제 보유내역은 커밋하지 않는다 — 공개 저장소다 (#1 제약).
+# 예정표는 CSV 라서 확장자로 통째로 막고, 가짜 숫자만 든 examples/ 만 되돌린다.
+*.csv
+!examples/*.csv
+
 # OS
 .DS_Store
