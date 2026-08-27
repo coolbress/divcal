@@ -1,0 +1,27 @@
+name: CI
+#
+# ⚠️ 잡 이름 `ci` 를 바꾸지 마라. 검사 이름이 `{호출잡}/{피호출잡}` 이 되므로
+# (실측: coolbress/standards CPR-007), 이 이름이 룰셋의 required context
+# `ci / lint`·`ci / typecheck`·`ci / test`·`ci / build` 와 묶여 있다.
+# 바꾸면 요구된 이름이 영원히 보고되지 않아 저장소가 머지 불가로 잠긴다.
+#
+# CI 로직은 여기 없다 — coolbress/workflows 한 곳에 있고 @SHA 로 핀한다.
+# 핀은 반드시 커밋 SHA 다 (태그는 가변 = 공급망 벡터). 옆의 주석이 그 SHA 의 버전이다 —
+# 무엇이 바뀌는지는 릴리스 노트로 읽는다: github.com/coolbress/workflows/releases
+# 갱신하려면 아래 SHA 를 올린다.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# PR 에 새로 푸시하면 이전 실행을 취소한다 — 낡은 커밋에 러너를 태우지 않는다.
+# main 은 취소하지 않는다: 머지된 커밋의 결과는 전부 남아야 한다.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  ci:
+    uses: coolbress/workflows/.github/workflows/python-ci.yml@acf53c2674dae949f94b7b3194145a4c8923aa08 # v3.1.0

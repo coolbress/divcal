@@ -1,0 +1,16 @@
+# 의존성 갱신 봇 — 바닥 MUST.
+# 사람이 매주 버전을 확인할 수 없고, 안 하면 그게 가장 약한 바닥이 된다.
+version: 2
+updates:
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+  # Actions 는 SHA 로 핀돼 있다 — 핀은 안전하지만 그래서 낡는다.
+  # Dependabot 이 SHA 를 올려주고 인라인 주석의 버전도 같이 고친다.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

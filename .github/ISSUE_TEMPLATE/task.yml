@@ -1,0 +1,32 @@
+name: 과제
+description: 만들 것 하나. 인수기준이 검사에 매핑되어야 한다.
+body:
+  - type: textarea
+    id: why
+    attributes:
+      label: 왜 하나
+      description: 무엇이 불편한가. 해결책이 아니라 문제를 쓴다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 인수기준
+      description: |
+        **안정 ID 를 붙인다** (`AC-1`, `AC-2`…). 나중에 PR 과 검사가 이 ID 를 가리킨다.
+        각 줄에 **무엇이 그것을 증명하는지**를 함께 쓴다.
+        증명할 검사를 못 정하겠으면 `UNVERIFIABLE` 이라고 쓴다 — 조용히 넘기지 않는다.
+      value: |
+        - AC-1: … → 검사: `tests/test_….py::test_…`
+        - AC-2: … → 검사: UNVERIFIABLE (사람이 눈으로 확인)
+    validations:
+      required: true
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: 안 만들 것
+      description: 이번에 하지 않는 것. 비워두면 범위가 조용히 넓어진다.
+    validations:
+      required: true

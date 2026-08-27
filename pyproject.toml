@@ -1,0 +1,54 @@
+[project]
+name = "app"
+version = "0.1.0"
+description = "설명을 여기에 쓴다"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "coolbress" }]
+dependencies = []
+
+# 배포 메타데이터. 패키지를 올리지 않더라도 값을 한다 —
+# `pip show` · GitHub · 의존성 그래프가 여기를 읽는다.
+# bootstrap.sh 가 이름과 라이선스를 실제 값으로 바꾼다.
+[project.urls]
+Homepage = "https://github.com/coolbress/app"
+Issues = "https://github.com/coolbress/app/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.14",
+    "pytest>=8.3",
+    "ruff>=0.9",
+]
+
+# ── 린터·포매터 ────────────────────────────────────────────────
+# 설정을 커밋한다 (바닥 MUST). CI 가 `ruff check` 와 `ruff format --check` 를 강제한다.
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "S", "A", "C4", "PT", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# 테스트에서는 assert 가 정상이다
+"tests/**" = ["S101"]
+
+# ── 타입 검사 ─────────────────────────────────────────────────
+[tool.mypy]
+strict = true
+python_version = "3.12"
+files = ["src", "tests"]
+
+# ── 테스트 ────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# warnings-as-errors — 바닥 MUST. 경고를 쌓아두지 않는다.
+# 서드파티 경고 때문에 막히면 여기에 좁은 ignore 를 한 줄씩 추가한다.
+filterwarnings = ["error"]
