@@ -1,5 +1,5 @@
 [project]
-name = "app"
+name = "divcal"
 version = "0.1.0"
 description = "설명을 여기에 쓴다"
 readme = "README.md"
@@ -13,8 +13,8 @@ dependencies = []
 # `pip show` · GitHub · 의존성 그래프가 여기를 읽는다.
 # bootstrap.sh 가 이름과 라이선스를 실제 값으로 바꾼다.
 [project.urls]
-Homepage = "https://github.com/coolbress/app"
-Issues = "https://github.com/coolbress/app/issues"
+Homepage = "https://github.com/coolbress/divcal"
+Issues = "https://github.com/coolbress/divcal/issues"
 
 [build-system]
 requires = ["hatchling"]
