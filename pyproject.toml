@@ -1,7 +1,7 @@
 [project]
 name = "divcal"
 version = "0.1.0"
-description = "설명을 여기에 쓴다"
+description = "배당 지급 예정표를 월별 현금흐름 표로 접는다 (세전 · USD)"
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
@@ -15,6 +15,10 @@ dependencies = []
 [project.urls]
 Homepage = "https://github.com/coolbress/divcal"
 Issues = "https://github.com/coolbress/divcal/issues"
+
+# `uv run divcal <예정표.csv> <연도>` — 설치 없이도 `python -m divcal` 로 같은 것이 돈다.
+[project.scripts]
+divcal = "divcal.cli:main"
 
 [build-system]
 requires = ["hatchling"]

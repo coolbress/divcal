@@ -14,4 +14,8 @@
 ## [Unreleased]
 
 ### Added
-- 최초 골격
+- 지급 예정 CSV 를 읽어 **월별 세전 배당 현금흐름 표**를 터미널에 찍는 `divcal` 명령 ([#1](https://github.com/coolbress/divcal/issues/1))
+- 예제 예정표 [`examples/schedule.csv`](examples/schedule.csv)
+
+### Removed
+- 템플릿 자리표시자 `greet()` — 실물이 들어와 자리를 비켜줬다
