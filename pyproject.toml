@@ -11,7 +11,6 @@ dependencies = []
 
 # 배포 메타데이터. 패키지를 올리지 않더라도 값을 한다 —
 # `pip show` · GitHub · 의존성 그래프가 여기를 읽는다.
-# bootstrap.sh 가 이름과 라이선스를 실제 값으로 바꾼다.
 [project.urls]
 Homepage = "https://github.com/coolbress/divcal"
 Issues = "https://github.com/coolbress/divcal/issues"
