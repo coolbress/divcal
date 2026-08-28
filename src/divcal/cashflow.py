@@ -75,13 +75,9 @@ class Payment:
 
         **건별로 뗀다**(#4 AC-3). 월 합계에 세율을 곱하면 명세서와 센트가 어긋난다 —
         `48.50` 은 세액 `7.28` 을 떼어 `41.22` 가 되지만, 세전에 `0.85` 를 곱해 접으면
-        `41.23` 이 나오고 그러면 `48.50 != 41.23 + 7.28` 이라 아래 항등식이 깨진다.
+        `41.23` 이 나오고 그러면 `48.50 != 41.23 + 7.28` 이라 `MonthTotals` 의 항등식이 깨진다.
         """
         return (self.total * rate / HUNDRED).quantize(CENT, rounding=ROUND_HALF_UP)
-
-    def after_tax(self, rate: Decimal) -> Decimal:
-        """세후 지급액. `total == withheld(rate) + after_tax(rate)` 가 센트까지 맞는다(#4 AC-4)."""
-        return self.total - self.withheld(rate)
 
 
 @dataclass(frozen=True, slots=True)
