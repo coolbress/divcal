@@ -3,15 +3,9 @@
 # 이 파일이 이 저장소가 **어느 템플릿 판에서 태어났는지**를 기억한다.
 # 그래서 나중에 `copier update` 가 그 뒤의 템플릿 변경만 골라 병합할 수 있다.
 # 지우면 이 저장소는 템플릿과 다시 끊긴다 — 시점 복사로 돌아간다.
-#
-# ⚠️ 이 저장소는 copier 이전에 `gh repo create --template` 로 태어났다.
-# 그래서 이 파일은 **입양**으로 심었다 — divcal 이 실제로 따라잡은 시점의
-# 템플릿 판이다 (coolbress/project-template #18 로 드리프트 0 을 확인한 뒤).
-#
-# 커밋 SHA(a21d142) 가 아니라 **태그**를 적는다. copier 가 태그를 PEP 440 으로
-# 비교해 최신을 고르므로, 태그가 곧 `copier update` 가 말하는 언어다.
-_commit: v1.0.0
+_commit: v2.0.0
 _src_path: gh:coolbress/project-template
 archetype: cli
 license: MIT
 project_name: divcal
+
