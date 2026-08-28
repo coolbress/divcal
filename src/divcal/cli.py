@@ -10,7 +10,16 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from divcal.cashflow import COLUMNS, ScheduleError, format_year, load_payments, monthly_totals
+from divcal.cashflow import (
+    COLUMNS,
+    DivcalError,
+    format_year,
+    format_year_after_tax,
+    load_payments,
+    monthly_after_tax,
+    monthly_totals,
+    parse_tax_rate,
+)
 
 EXIT_BAD_INPUT = 2
 
@@ -23,13 +32,24 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     parser.add_argument("schedule", type=Path, help=f"지급 예정 CSV ({','.join(COLUMNS)})")
     parser.add_argument("year", type=int, help="볼 연도 (예: 2026)")
+    parser.add_argument(
+        "--tax",
+        metavar="퍼센트",
+        help="원천징수 세율. 퍼센트 단위다 — 15%% 는 `--tax 15`. 안 주면 세전만 찍는다.",
+    )
     args = parser.parse_args(argv)
 
     try:
+        # 세율을 먼저 본다. 플래그가 틀렸으면 파일을 읽어볼 것도 없다.
+        rate = None if args.tax is None else parse_tax_rate(args.tax)
         payments = load_payments(args.schedule)
-    except ScheduleError as exc:
+    except DivcalError as exc:
         print(f"divcal: {exc}", file=sys.stderr)
         return EXIT_BAD_INPUT
 
-    print(format_year(monthly_totals(payments, args.year), args.year))
+    if rate is None:
+        # `--tax` 가 없으면 #1 의 출력 그대로다(#4 AC-2).
+        print(format_year(monthly_totals(payments, args.year), args.year))
+    else:
+        print(format_year_after_tax(monthly_after_tax(payments, args.year, rate), args.year, rate))
     return 0
