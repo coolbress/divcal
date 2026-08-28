@@ -1,0 +1,18 @@
+# 이 저장소의 PR 에 타입 라벨을 붙인다. 로직은 여기 없다 — coolbress/workflows 에 있다.
+#
+# ⚠️ 잡 이름이 `ci` 가 아니다. 일부러 그렇다 —
+# 이건 **검사가 아니고 룰셋에 안 들어간다.** `ci / *` 이름과 섞이면 안 된다.
+# 라벨이 없으면 릴리스 노트가 한 덩어리로 나올 뿐이고, 그건 머지를 막을 일이 아니다.
+name: PR label
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write   # 라벨을 붙이는 데만 쓴다
+
+jobs:
+  label:
+    uses: coolbress/workflows/.github/workflows/pr-label.yml@f31175a58afbbddfef7a34d7d0f638b4f7591d65 # v3.5.0

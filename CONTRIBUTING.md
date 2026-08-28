@@ -42,7 +42,16 @@ PR 은 어느 AC 를 닫는지, 무엇이 그것을 증명하는지 밝힌다.
 
 ## 커밋·PR 제목
 
-본문 형식은 강제하지 않는다. **PR 제목**만 `type: 요약` 형태로 쓴다.
+본문 형식은 강제하지 않는다. **PR 제목**만 `type(scope): 요약` 으로 쓴다 —
+squash 로 머지하므로 **PR 제목이 곧 랜딩 커밋**이다. `ci / pr-title` 이 검사한다.
+
+**타입은 이 11종뿐이다** (`@commitlint/config-conventional`):
+`feat` `fix` `docs` `style` `refactor` `perf` `test` `build` `ci` `chore` `revert`
+
+🔴 **새 타입을 만들지 마라.** 남는 의미는 **scope** 로 쓴다 — `docs(research):` ·
+`docs(decision):` · `refactor(layout):` · `build(deps):` · `fix(security):`.
+규격이 그렇게 시킨다(타입은 `feat`·`fix` 만 필수이고 **scope 는 자유형**이다).
+이 규칙이 있는 이유: 커스텀 타입은 **적어둬도 안 읽힌다.** 실제로 그래서 한 번 갈렸다.
 
 ## 로컬에서 먼저
 
