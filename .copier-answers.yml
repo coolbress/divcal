@@ -3,7 +3,7 @@
 # 이 파일이 이 저장소가 **어느 템플릿 판에서 태어났는지**를 기억한다.
 # 그래서 나중에 `copier update` 가 그 뒤의 템플릿 변경만 골라 병합할 수 있다.
 # 지우면 이 저장소는 템플릿과 다시 끊긴다 — 시점 복사로 돌아간다.
-_commit: v2.2.0
+_commit: v2.3.0
 _src_path: gh:coolbress/project-template
 archetype: cli
 license: MIT
