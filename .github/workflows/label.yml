@@ -15,4 +15,4 @@ permissions:
 
 jobs:
   label:
-    uses: coolbress/workflows/.github/workflows/pr-label.yml@f31175a58afbbddfef7a34d7d0f638b4f7591d65 # v3.5.0
+    uses: coolbress/workflows/.github/workflows/pr-label.yml@6e5c09191e39e76049f460e91d26eef36d163420 # v3.7.0
