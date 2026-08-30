@@ -31,4 +31,12 @@ permissions:
 
 jobs:
   ci:
-    uses: coolbress/workflows/.github/workflows/python-ci.yml@8dcc67a5a0d08a37859b81698fcc54dba44a6b1e # v3.8.0
+    uses: coolbress/workflows/.github/workflows/python-ci.yml@6c01242b478c8f78f01c0f0a9aaedf8d82365dbe # v3.9.0
+    with:
+      # 🔴 `pyproject.toml` 이 `requires-python = ">=3.12"` 라고 선언한다.
+      # 한 판만 재면 **안 재본 것을 지원한다고 말하는 것**이다 — 아키타입과 무관하게 그렇다.
+      # ⚠️ **매트릭스가 아니라 한 잡 안에서 돈다** — 검사 이름이 `ci / test` 로 유지되므로
+      # 룰셋을 다시 안 고쳐도 된다(새 이름은 소비자마다 관리자 작업을 부른다).
+      # ⚠️ 이 파일은 `.jinja` 가 아니라 **그대로 복사된다** — 조건을 걸려면 이름을 바꿔야 하는데
+      # 그러면 `actionlint`·`zizmor` 가 이 파일을 못 본다. 조건을 안 거는 쪽이 낫다.
+      extra-python-versions: "3.13"
