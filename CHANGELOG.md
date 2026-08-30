@@ -17,6 +17,7 @@
 - 지급 예정 CSV 를 읽어 **월별 세전 배당 현금흐름 표**를 터미널에 찍는 `divcal` 명령 ([#1](https://github.com/coolbress/divcal/issues/1))
 - 예제 예정표 [`examples/schedule.csv`](examples/schedule.csv)
 - `--tax <퍼센트>` — **원천징수를 떼고 세전·세후 두 칼럼**으로 찍는다. 세금은 지급 건별로 떼어 `세전 = 세후 + 세액` 이 센트까지 맞는다 ([#4](https://github.com/coolbress/divcal/issues/4))
+- `divcal serve <예정표.csv>` — 폰 캘린더가 구독하는 **RFC 5545 `.ics` 피드**. stdlib `http.server` 로만 짓고 의존성은 없다. 토큰 URL 하나가 자물쇠다 ([#6](https://github.com/coolbress/divcal/issues/6))
 
 ### Removed
 - 템플릿 자리표시자 `greet()` — 실물이 들어와 자리를 비켜줬다

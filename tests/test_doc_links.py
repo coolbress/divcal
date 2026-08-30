@@ -56,3 +56,17 @@ def test_every_relative_link_points_at_a_file_that_exists() -> None:
 def test_the_check_actually_looks_at_something() -> None:
     """🔵 문서를 하나도 못 찾으면 위 시험은 조용히 통과한다 — 검사가 헛도는 형태다."""
     assert _markdown_files(), "마크다운 문서를 하나도 못 찾았다"
+
+
+def test_readme_warns_about_token_url() -> None:
+    """#6 AC-12 — 토큰 URL 하나가 보유내역 전체를 연다. README 가 그것을 말해야 한다.
+
+    🔴 이 저장소는 *"보유내역을 어디에도 안 넘긴다"* 를 근거로 지어졌다(#1·#4).
+    `serve` 는 그 근거를 반쯤 판다 — **경고 없이 파는 것**과 아는 채로 파는 것은 다르다.
+    """
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+
+    assert "토큰 URL" in readme, "README 가 토큰 URL 을 이름으로 부르지 않는다"
+    warning = readme[readme.index("토큰 URL") :]
+    for word in ("커밋", "공유", "보유내역"):
+        assert word in warning[:600], f"경고에 '{word}' 가 없다 — 무엇이 새는지 안 적혀 있다"
