@@ -52,6 +52,11 @@ files = ["src", "tests"]
 # ── 테스트 ────────────────────────────────────────────────────
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# 🔴 **조용한 실패를 막는다.** 둘 다 없으면 오타가 *아무 일도 안 하고* 통과한다 —
+#   `--strict-markers`: 등록 안 된 `@pytest.mark.foo` 는 **오타여도 조용히 no-op** 이다
+#   `--strict-config`  : 이 절의 키를 잘못 쓰면 **무시된다** (예: `filterwarning`)
+# 검사가 도는 척하는 것이 안 도는 것보다 나쁘다.
+addopts = ["--strict-markers", "--strict-config"]
 # warnings-as-errors — 바닥 MUST. 경고를 쌓아두지 않는다.
 # 서드파티 경고 때문에 막히면 여기에 좁은 ignore 를 한 줄씩 추가한다.
 filterwarnings = ["error"]

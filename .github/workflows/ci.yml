@@ -22,6 +22,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+# 🔒 **부르는 잡의 권한이 상한이다.** 재사용 워크플로가 자기 `permissions:` 를 선언해도
+# 여기를 넘을 수 없다. 저장소 설정(`default_workflow_permissions`)도 read 지만 그건
+# **관리자가 바꿀 수 있는 것**이고 이 줄은 **PR 로 리뷰되는 것**이다 — 층이 다르다.
+# (zizmor `excessive-permissions` 가 이게 없으면 medium 으로 잡는다.)
+permissions:
+  contents: read
+
 jobs:
   ci:
-    uses: coolbress/workflows/.github/workflows/python-ci.yml@6e5c09191e39e76049f460e91d26eef36d163420 # v3.7.0
+    uses: coolbress/workflows/.github/workflows/python-ci.yml@8dcc67a5a0d08a37859b81698fcc54dba44a6b1e # v3.8.0

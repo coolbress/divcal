@@ -83,3 +83,21 @@ def test_no_build_artifact_is_tracked() -> None:
         f"빌드 산출물이 커밋돼 있다: {junk}\n"
         "산출물은 빌드가 만든다 — 커밋되면 diff 를 부풀리고 리뷰를 묻는다."
     )
+
+
+def test_personal_claude_settings_are_not_tracked() -> None:
+    """`.claude/settings.json` 은 팀의 것이고 `settings.local.json` 은 **개인의 것**이다.
+
+    🔴 왜 저장소가 막아야 하나 (2026-08-30 실측): Claude Code 는 이 파일을 처음 쓸 때
+    **전역** git excludes(`~/.config/git/ignore`)에 넣는다 — 1차 문서가 그렇게 말하고
+    실제로 그렇게 돼 있었다. **그건 그 기계를 지키지 저장소를 지키지 않는다.**
+    다른 기계 · 다른 기여자 · 손으로 만든 경우엔 안 막힌다
+    (문서도 *"add it to `.gitignore` yourself"* 라고 적는다).
+
+    커밋되면 **한 사람의 권한 승인이 모두의 저장소로** 들어간다.
+    """
+    personal = [p for p in tracked() if p.endswith(".claude/settings.local.json")]
+    assert not personal, (
+        f"개인 설정이 추적되고 있다: {personal}\n"
+        "한 사람의 권한 승인이 모두에게 간다. .gitignore 에 넣고 git rm --cached 해라."
+    )

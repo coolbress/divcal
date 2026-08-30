@@ -20,5 +20,12 @@ dist/
 *.csv
 !examples/*.csv
 
+# Claude Code 의 **개인** 설정. 커밋되는 것은 `.claude/settings.json` 뿐이다.
+# 🔴 Claude Code 는 이 파일을 처음 쓸 때 **전역** git excludes 에 넣는다(1차 문서) —
+# 그건 **그 기계**를 지키지 **저장소**를 지키지 않는다. 다른 기계 · 다른 기여자 ·
+# 손으로 만든 경우엔 안 막힌다. 그래서 저장소가 스스로 막는다.
+# (커밋되면 한 사람의 권한 승인이 모두의 저장소로 들어간다.)
+.claude/settings.local.json
+
 # OS
 .DS_Store
