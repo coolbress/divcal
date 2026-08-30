@@ -1,0 +1,10 @@
+# 개행은 저장소 안에서 **LF 로 정규화**한다.
+# `.editorconfig` 의 `end_of_line = lf` 는 **편집기에게 하는 부탁**이고, 이 줄은 **git 이 집행**한다.
+# 커밋된 이 파일만으로 돈다 — 각자 로컬 설정이 필요 없다.
+* text=auto eol=lf
+
+# 🔴 **락파일은 사람이 안 쓴다. 기계가 쓴다.**
+# `linguist-generated` 가 붙으면 GitHub 이 **diff 에서 접는다**(1차 문서: *"suppressed in diffs"*).
+# 리뷰가 봐야 하는 것은 `pyproject.toml` 의 바뀐 한 줄이지 `uv.lock` 의 수백 줄이 아니다.
+# ⚠️ **파일 목록에서 사라지지는 않는다** — 접힐 뿐이고, `ci / diff-size` 는 따로 센다.
+uv.lock linguist-generated

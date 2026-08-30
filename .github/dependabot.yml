@@ -7,6 +7,20 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    # 🔴 묶는다. 안 묶으면 갱신마다 PR 이 하나씩 열려 **리뷰가 아니라 소음**이 된다.
+    # GitHub 이 이 방향을 권한다(2026-07 · "group your updates, keep security fast").
+    # ⚠️ **보안 갱신은 이 설정을 안 탄다** — 별도 파이프라인이라 묶음·일정·PR 상한과
+    # 무관하게 즉시 열린다. 묶는다고 CVE 수정이 늦어지지 않는다.
+    # ⚠️ cooldown 은 **안 적는다** — 새 릴리스 3일 대기가 이제 GitHub 기본값이다.
+    groups:
+      # 개발 도구(ruff·mypy·pytest)는 한 PR 로. 깨져도 제품이 아니라 CI 가 깨진다.
+      dev-tools:
+        dependency-type: "development"
+      # 런타임 의존성은 patch·minor 만 묶는다. major 는 **따로 온다** —
+      # 깨는 변경이라 하나씩 봐야 한다.
+      runtime-minor:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
 
   # Actions 는 SHA 로 핀돼 있다 — 핀은 안전하지만 그래서 낡는다.
   # Dependabot 이 SHA 를 올려주고 인라인 주석의 버전도 같이 고친다.
@@ -14,3 +28,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      actions:
+        patterns: ["*"]

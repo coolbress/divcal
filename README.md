@@ -89,7 +89,7 @@ API 자동 조회 · 환율/원화 · 종목별 세율 · `.ics`/웹 화면 · �
 ```bash
 git clone https://github.com/coolbress/divcal.git
 cd divcal
-uv sync                                   # 1. 의존성
+uv sync --locked                          # 1. 의존성 (CI 와 같은 명령)
 uv run divcal examples/schedule.csv 2026  # 2. 돌려보기
 ```
 
