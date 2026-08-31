@@ -80,6 +80,12 @@ def test_configure_is_idempotent() -> None:
 
 
 def _mod() -> ModuleType:
+    """이 패키지의 `_logging` 을 이름으로 불러온다 (패키지 이름이 렌더 시점에 정해진다).
+
+    ⚠️ 반환 타입을 적는다. 첫 판은 `# noqa: ANN202` 로 넘겼는데 **인스턴스의 ruff 설정엔
+    `ANN` 이 없어서** 그 억제가 `RUF100`(쓰이지 않은 noqa)으로 되돌아왔다 —
+    그리고 `mypy --strict` 는 **untyped 호출**로 따로 걸었다. **억제가 아니라 타입이 답이다.**
+    """
     return __import__(f"{_pkg()}._logging", fromlist=["_resolve", "TextFormatter"])
 
 
@@ -107,7 +113,8 @@ def test_falls_back_to_the_terminal(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_a_wrong_value_is_refused_not_guessed(monkeypatch: pytest.MonkeyPatch) -> None:
     """🔴 오타를 조용히 기본값으로 넘기면 **틀린 형식이 프로덕션까지 간다.**"""
     monkeypatch.setenv("LOG_FORMAT", "JSON ")
-    with pytest.raises(ValueError, match="LOG_FORMAT"):
+    # 🔴 `match=` 로 **이유까지** 본다. 종류만 보면 엉뚱한 `ValueError` 도 통과한다.
+    with pytest.raises(ValueError, match="json 또는 text"):
         _mod()._resolve(None)
 
 
