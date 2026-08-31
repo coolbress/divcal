@@ -18,6 +18,7 @@
 - 예제 예정표 [`examples/schedule.csv`](examples/schedule.csv)
 - `--tax <퍼센트>` — **원천징수를 떼고 세전·세후 두 칼럼**으로 찍는다. 세금은 지급 건별로 떼어 `세전 = 세후 + 세액` 이 센트까지 맞는다 ([#4](https://github.com/coolbress/divcal/issues/4))
 - `divcal serve <예정표.csv>` — 폰 캘린더가 구독하는 **RFC 5545 `.ics` 피드**. stdlib `http.server` 로만 짓고 의존성은 없다. 토큰 URL 하나가 자물쇠다 ([#6](https://github.com/coolbress/divcal/issues/6))
+- **backend 아키타입 바닥** — 컨테이너 이미지(`Dockerfile`) · 구조화 로깅 · `DIVCAL_SCHEDULE`·`DIVCAL_PORT`·`DIVCAL_TAX` 환경변수(인자가 이긴다). 🔴 토큰은 로그에 안 남는다 ([#30](https://github.com/coolbress/divcal/issues/30))
 
 ### Removed
 - 템플릿 자리표시자 `greet()` — 실물이 들어와 자리를 비켜줬다
