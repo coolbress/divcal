@@ -96,6 +96,23 @@ http://127.0.0.1:8765/hR3s0vQ...9-Qm.ics
 숫자는 위의 표와 **같은 건별 반올림**이다. CSV 는 **요청마다 다시 읽는다.**
 예정표를 고치면 재시작 없이 다음 동기화에 반영된다.
 
+인자 대신 환경으로 줘도 된다 — **인자가 이긴다.** 컨테이너로 띄우면 `CMD` 에 인자를 못 박으니
+그때는 이쪽이 유일한 통로다. 키는 [`.env.example`](.env.example) 에 있다.
+
+```console
+$ DIVCAL_SCHEDULE=예정표.csv DIVCAL_TAX=15 uv run divcal serve
+$ docker build -t divcal . && docker run -e DIVCAL_SCHEDULE=/data/s.csv -p 8765:8765 divcal
+```
+
+요청은 한 줄씩 남는다. 터미널이면 사람이 읽는 줄, 파이프·컨테이너면 JSON 이다
+(`LOG_FORMAT=json|text` 로 못박을 수 있다). 🔴 **토큰은 로그에 안 나온다** — 맞은 요청에도
+틀린 요청에도 경로를 안 찍는다. 틀린 것이 *거의 맞은* 토큰일 수 있어서다.
+
+```
+10:49:29 INFO  feed  bytes=1782 events=11 status=200
+10:49:29 WARNING miss  status=404
+```
+
 🔴 **토큰 URL 은 보유내역 전체를 여는 열쇠다.** 비밀번호가 없다 — 그 주소를 아는 사람은
 종목·수량·금액을 전부 본다. **커밋하지 마라. 공유하지 마라.** 채팅·이슈·스크린샷에
 한 번 붙는 순간 끝이다. 샜다고 생각되면 서버를 다시 띄운다 — 토큰이 새로 난다.

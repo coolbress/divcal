@@ -31,3 +31,9 @@ updates:
     groups:
       actions:
         patterns: ["*"]
+  # 🔴 베이스 이미지는 **다이제스트로 박혀 있다** — 안전하지만 그래서 낡는다.
+  # Actions 를 SHA 로 핀하고 Dependabot 이 올려주는 것과 **같은 구조**다.
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"

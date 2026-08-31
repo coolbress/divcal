@@ -1,0 +1,14 @@
+# 이미지에 들어가면 안 되는 것. `.gitignore` 와 **목적이 다르다** —
+# 저기는 *커밋하지 않을 것*, 여기는 *이미지에 넣지 않을 것*이다.
+.git
+.github
+.venv
+.env
+.env.*
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+dist/
+tests/

@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import logging
 import re
 import threading
 from collections.abc import Iterator
@@ -17,6 +18,7 @@ from urllib.request import urlopen
 import pytest
 
 from divcal.cashflow import DivcalError
+from divcal.serve import main as serve_main
 from divcal.serve import make_server
 
 SCHEDULE = "ticker,shares,amount_per_share,pay_date\nKO,100,0.485,2026-04-01\n"
@@ -128,3 +130,73 @@ def test_busy_port_is_a_message_not_a_traceback(feed: tuple[str, Path]) -> None:
 
     with pytest.raises(DivcalError, match="--port"):
         make_server(path, None, port=taken)
+
+
+def test_logs_feed_hit(feed: tuple[str, Path], caplog: pytest.LogCaptureFixture) -> None:
+    """#30 AC-4 — 긁혔다는 것이 한 줄 남는다. 건수까지 있어야 *"뭘 줬나"* 가 보인다."""
+    with caplog.at_level(logging.INFO, logger="divcal.serve"):
+        _get(feed[0])
+
+    hit = next(r for r in caplog.records if r.message == "feed")
+    assert hit.__dict__["status"] == HTTPStatus.OK
+    assert hit.__dict__["events"] == 1
+
+
+def test_logs_miss(feed: tuple[str, Path], caplog: pytest.LogCaptureFixture) -> None:
+    """#30 AC-5 — 공개 HTTPS 로 나가는 이상 두드림이 안 보이면 **샜는지도 모른다.**"""
+    base = feed[0].rsplit("/", 1)[0]
+    with caplog.at_level(logging.INFO, logger="divcal.serve"):
+        _get(f"{base}/nope.ics")
+
+    miss = next(r for r in caplog.records if r.message == "miss")
+    assert miss.levelno == logging.WARNING  # 성공과 눈으로 갈려야 한다
+    assert miss.__dict__["status"] == HTTPStatus.NOT_FOUND
+
+
+def test_token_never_reaches_the_log(
+    feed: tuple[str, Path], caplog: pytest.LogCaptureFixture
+) -> None:
+    """🔴 #30 AC-6 — 토큰이 자물쇠 전부다. 맞은 요청에도 틀린 요청에도 안 나온다.
+
+    틀린 토큰이 **거의 맞은 것**일 수 있어서 경로를 찍으면 무차별 대입에 힌트를 준다.
+    그래서 성공 줄에도 경로를 안 넣는다 — 예외를 두면 언젠가 그 예외로 샌다.
+    """
+    url, _ = feed
+    base, token = url.rsplit("/", 1)
+    with caplog.at_level(logging.INFO, logger="divcal.serve"):
+        _get(url)
+        _get(f"{base}/{token[:-5]}.ics")  # 한 글자 빼서 *거의* 맞은 토큰
+
+    # 포맷된 줄만이 아니라 **레코드가 들고 있는 것 전부**를 훑는다 —
+    # `extra=` 로 붙인 값은 메시지에 안 나타나므로 caplog.text 만 보면 놓친다.
+    blob = caplog.text + "".join(repr(r.__dict__) for r in caplog.records)
+    assert token[:-4] not in blob
+    assert "nope" not in blob
+
+
+def test_env_fills_in_when_the_argument_is_missing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """#30 AC-8 — 인자가 없으면 `$DIVCAL_SCHEDULE` 을 본다. 컨테이너의 유일한 통로다."""
+    monkeypatch.setenv("DIVCAL_SCHEDULE", str(tmp_path / "없다.csv"))
+
+    # 서버가 서기 **전에** 예정표를 한 번 읽는다 — 그래서 여기서 멈춘다.
+    with pytest.raises(DivcalError, match=r"없다\.csv"):
+        serve_main([])
+
+
+def test_cli_argument_beats_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """#30 AC-8 — 환경은 **폴백**이다. 인자를 주면 인자가 이긴다."""
+    monkeypatch.setenv("DIVCAL_SCHEDULE", str(_write(tmp_path)))
+
+    # 환경이 이기면 멀쩡한 CSV 를 읽어 서버가 서버린다. 인자가 이겨야 여기서 멈춘다.
+    with pytest.raises(DivcalError, match=r"인자쪽\.csv"):
+        serve_main([str(tmp_path / "인자쪽.csv")])
+
+
+def test_bad_env_port_is_a_message_not_a_traceback(monkeypatch: pytest.MonkeyPatch) -> None:
+    """컨테이너가 준 값이 오타면 트레이스백 말고 한 줄이다."""
+    monkeypatch.setenv("DIVCAL_PORT", "여덟천")
+
+    with pytest.raises(DivcalError, match="DIVCAL_PORT"):
+        serve_main([])
