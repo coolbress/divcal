@@ -21,7 +21,7 @@ COPY README.md ./
 RUN uv sync --locked --no-dev
 
 # ── 실행 단계 ──────────────────────────────────────────────────
-FROM python:3.12-slim@sha256:09f7da3bc104798d0afb40bc08d23ab2da20a76130cec1f2ef170848f5d85217
+FROM python:3.14-slim@sha256:cae66f2ef0ec51a9891263eeee7f987dacf0a9879e8aa9353d5606e0530619a5
 
 # 🔴 **root 로 돌지 않는다.** 컨테이너 탈출의 피해 범위가 달라진다.
 RUN useradd --create-home --uid 10001 app
