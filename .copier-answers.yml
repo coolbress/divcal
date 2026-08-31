@@ -5,7 +5,7 @@
 # 지우면 이 저장소는 템플릿과 다시 끊긴다 — 시점 복사로 돌아간다.
 _commit: v2.14.0
 _src_path: gh:coolbress/project-template
-archetype: cli
+archetype: backend
 license: MIT
 project_name: divcal
 
