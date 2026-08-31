@@ -56,3 +56,22 @@ def test_no_unquoted_yaml_alias_trap() -> None:
                 f"{path.name}:{lineno} 값이 `*`/`&` 로 시작한다 — YAML 이 alias 로 읽어 "
                 f"폼이 통째로 깨진다. 따옴표로 감싸라.\n  {line.strip()}"
             )
+
+
+def test_every_form_labels_its_issues() -> None:
+    """🔴 라벨이 없으면 그 이슈는 **목록에서 안 갈린다.**
+
+    실측(2026-08-30): `task.yml` 만 `labels:` 가 비어 있었다. `bug`·`enhancement` 는
+    GitHub **기본 라벨**이라 그냥 되는데 `task` 는 아니라서 그렇게 됐다.
+    `/kickoff` 이 만드는 과제가 버그 신고와 안 갈리면 `gh issue list` 로
+    *다음 할 일* 을 못 추린다 — **그게 이 저장소의 정본인데도.**
+
+    ⚠️ 라벨 이름이 실제로 저장소에 있어야 한다. `new-project.sh` 가 `task` 를 만든다.
+    """
+    # ⚠️ `yaml` 은 인스턴스의 의존성이 아니다 — 이 파일이 정규식을 쓰는 이유다.
+    missing = [
+        f.name
+        for f in _form_files()
+        if not re.search(r"^labels:\s*\[.+\]", f.read_text(encoding="utf-8"), re.M)
+    ]
+    assert not missing, f"라벨이 없는 폼: {missing} — 그 이슈는 목록에서 안 갈린다"

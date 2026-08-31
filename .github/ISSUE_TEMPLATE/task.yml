@@ -1,5 +1,9 @@
 name: 과제
 description: 만들 것 하나. 인수기준이 검사에 매핑되어야 한다.
+# 🔴 `bug`·`enhancement` 는 GitHub **기본 라벨**이라 새 저장소에 이미 있다. `task` 는 없다 —
+# `new-project.sh` 가 만든다. 라벨이 없으면 `/kickoff` 이 만든 과제가 버그 신고와 안 갈려
+# `gh issue list` 로 *다음 할 일* 을 못 추린다. 그게 이 저장소의 정본인데도 그렇다.
+labels: ["task"]
 body:
   - type: textarea
     id: why
